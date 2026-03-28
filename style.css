@@ -41,3 +41,13 @@ button:hover {
 .hide {
   display: none;
 }
+
+
+body.light {
+  background: #f1f5f9;
+  color: black;
+}
+
+body.light .container {
+  background: white;
+}
