@@ -13,30 +13,53 @@ const questions = [
     question: "Which keyword declares a variable?",
     options: ["var", "int", "string"],
     answer: 0
-  },
-  {
-    question: "Which company developed JavaScript?",
-    options: ["Google", "Netscape", "Microsoft"],
-    answer: 1
   }
 ];
 
 let currentQuestion = 0;
 let score = 0;
+let timer;
+let timeLeft = 10;
 
 const questionEl = document.getElementById("question");
 const answersEl = document.getElementById("answers");
 const nextBtn = document.getElementById("nextBtn");
+const timerEl = document.createElement("h3");
 
-const quizBox = document.getElementById("quiz");
-const resultBox = document.getElementById("result");
-const scoreText = document.getElementById("scoreText");
+document.querySelector(".container").prepend(timerEl);
 
-let selectedAnswer = null;
+// 🔊 Sounds
+const correctSound = new Audio("correct.mp3");
+const wrongSound = new Audio("wrong.mp3");
+
+// 🌙 Theme toggle
+const toggleBtn = document.createElement("button");
+toggleBtn.innerText = "Toggle Theme";
+document.body.prepend(toggleBtn);
+
+toggleBtn.onclick = () => {
+  document.body.classList.toggle("light");
+};
+
+// ⏱️ Timer start
+function startTimer() {
+  timeLeft = 10;
+  timerEl.innerText = `⏱️ Time: ${timeLeft}s`;
+
+  timer = setInterval(() => {
+    timeLeft--;
+    timerEl.innerText = `⏱️ Time: ${timeLeft}s`;
+
+    if (timeLeft === 0) {
+      clearInterval(timer);
+      nextQuestion();
+    }
+  }, 1000);
+}
 
 function loadQuestion() {
-  selectedAnswer = null;
-  nextBtn.disabled = true;
+  clearInterval(timer);
+  startTimer();
 
   const q = questions[currentQuestion];
   questionEl.innerText = q.question;
@@ -47,25 +70,28 @@ function loadQuestion() {
     btn.innerText = option;
 
     btn.onclick = () => {
-      selectedAnswer = index;
-      nextBtn.disabled = false;
+      clearInterval(timer);
 
-      document.querySelectorAll("#answers button").forEach(b => {
-        b.style.background = "#38bdf8";
-      });
+      if (index === q.answer) {
+        btn.style.background = "green";
+        score++;
+        correctSound.play();
+      } else {
+        btn.style.background = "red";
+        wrongSound.play();
+      }
 
-      btn.style.background = "#22c55e"; // selected green
+      // highlight correct
+      document.querySelectorAll("#answers button")[q.answer].style.background = "green";
+
+      setTimeout(nextQuestion, 1000);
     };
 
     answersEl.appendChild(btn);
   });
 }
 
-nextBtn.addEventListener("click", () => {
-  if (selectedAnswer === questions[currentQuestion].answer) {
-    score++;
-  }
-
+function nextQuestion() {
   currentQuestion++;
 
   if (currentQuestion < questions.length) {
@@ -73,23 +99,40 @@ nextBtn.addEventListener("click", () => {
   } else {
     showResult();
   }
-});
-
-function showResult() {
-  quizBox.classList.add("hide");
-  resultBox.classList.remove("hide");
-
-  scoreText.innerText = `Your Score: ${score}/${questions.length}`;
 }
 
-function restartQuiz() {
-  currentQuestion = 0;
-  score = 0;
+function showResult() {
+  document.querySelector(".container").innerHTML = `
+    <h2>🏆 Your Score: ${score}/${questions.length}</h2>
+    <input id="username" placeholder="Enter your name"/>
+    <button onclick="saveScore()">Save Score</button>
+    <button onclick="location.reload()">Restart</button>
+  `;
+}
 
-  quizBox.classList.remove("hide");
-  resultBox.classList.add("hide");
+// 🏆 Save to backend (temporary localStorage)
+function saveScore() {
+  const name = document.getElementById("username").value;
+  const data = JSON.parse(localStorage.getItem("scores")) || [];
 
-  loadQuestion();
+  data.push({ name, score });
+  localStorage.setItem("scores", JSON.stringify(data));
+
+  showLeaderboard();
+}
+
+function showLeaderboard() {
+  const data = JSON.parse(localStorage.getItem("scores")) || [];
+
+  let html = "<h2>🏆 Leaderboard</h2>";
+
+  data.sort((a, b) => b.score - a.score);
+
+  data.forEach((user) => {
+    html += `<p>${user.name}: ${user.score}</p>`;
+  });
+
+  document.querySelector(".container").innerHTML = html;
 }
 
 loadQuestion();
