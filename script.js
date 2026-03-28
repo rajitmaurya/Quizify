@@ -28,11 +28,11 @@ const timerEl = document.createElement("h3");
 
 document.querySelector(".container").prepend(timerEl);
 
-// 🔊 Sounds
+//  Sounds
 const correctSound = new Audio("correct.mp3");
 const wrongSound = new Audio("wrong.mp3");
 
-// 🌙 Theme toggle
+// Theme toggle
 const toggleBtn = document.createElement("button");
 toggleBtn.innerText = "Toggle Theme";
 document.body.prepend(toggleBtn);
@@ -41,14 +41,14 @@ toggleBtn.onclick = () => {
   document.body.classList.toggle("light");
 };
 
-// ⏱️ Timer start
+//  Timer start
 function startTimer() {
   timeLeft = 10;
   timerEl.innerText = `⏱️ Time: ${timeLeft}s`;
 
   timer = setInterval(() => {
     timeLeft--;
-    timerEl.innerText = `⏱️ Time: ${timeLeft}s`;
+    timerEl.innerText = ` Time: ${timeLeft}s`;
 
     if (timeLeft === 0) {
       clearInterval(timer);
@@ -103,14 +103,14 @@ function nextQuestion() {
 
 function showResult() {
   document.querySelector(".container").innerHTML = `
-    <h2>🏆 Your Score: ${score}/${questions.length}</h2>
+    <h2> Your Score: ${score}/${questions.length}</h2>
     <input id="username" placeholder="Enter your name"/>
     <button onclick="saveScore()">Save Score</button>
     <button onclick="location.reload()">Restart</button>
   `;
 }
 
-// 🏆 Save to backend (temporary localStorage)
+// Save to backend (temporary localStorage)
 function saveScore() {
   const name = document.getElementById("username").value;
   const data = JSON.parse(localStorage.getItem("scores")) || [];
