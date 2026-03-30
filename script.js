@@ -1,3 +1,8 @@
+//  Progress elements
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+//  Questions
 const questions = [
   {
     question: "What is JavaScript?",
@@ -21,18 +26,20 @@ let score = 0;
 let timer;
 let timeLeft = 10;
 
+//  Elements
 const questionEl = document.getElementById("question");
 const answersEl = document.getElementById("answers");
 const nextBtn = document.getElementById("nextBtn");
-const timerEl = document.createElement("h3");
 
+//  Timer UI
+const timerEl = document.createElement("h3");
 document.querySelector(".container").prepend(timerEl);
 
 //  Sounds
 const correctSound = new Audio("correct.mp3");
 const wrongSound = new Audio("wrong.mp3");
 
-// Theme toggle
+//  Theme toggle
 const toggleBtn = document.createElement("button");
 toggleBtn.innerText = "Toggle Theme";
 document.body.prepend(toggleBtn);
@@ -41,10 +48,10 @@ toggleBtn.onclick = () => {
   document.body.classList.toggle("light");
 };
 
-//  Timer start
+//  Start Timer
 function startTimer() {
   timeLeft = 10;
-  timerEl.innerText = `⏱️ Time: ${timeLeft}s`;
+  timerEl.innerText = `⏱ Time: ${timeLeft}s`;
 
   timer = setInterval(() => {
     timeLeft--;
@@ -57,11 +64,18 @@ function startTimer() {
   }, 1000);
 }
 
+//  Load Question
 function loadQuestion() {
   clearInterval(timer);
   startTimer();
 
   const q = questions[currentQuestion];
+
+  //  Progress update
+  const progressPercent = (currentQuestion / questions.length) * 100;
+  progressBar.style.width = progressPercent + "%";
+  progressText.innerText = `Question ${currentQuestion + 1} / ${questions.length}`;
+
   questionEl.innerText = q.question;
   answersEl.innerHTML = "";
 
@@ -72,6 +86,12 @@ function loadQuestion() {
     btn.onclick = () => {
       clearInterval(timer);
 
+      // ⚡ Click animation
+      btn.style.transform = "scale(0.95)";
+      setTimeout(() => {
+        btn.style.transform = "scale(1)";
+      }, 100);
+
       if (index === q.answer) {
         btn.style.background = "green";
         score++;
@@ -81,7 +101,7 @@ function loadQuestion() {
         wrongSound.play();
       }
 
-      // highlight correct
+      //  Highlight correct answer
       document.querySelectorAll("#answers button")[q.answer].style.background = "green";
 
       setTimeout(nextQuestion, 1000);
@@ -91,16 +111,19 @@ function loadQuestion() {
   });
 }
 
+// Next Question
 function nextQuestion() {
   currentQuestion++;
 
   if (currentQuestion < questions.length) {
     loadQuestion();
   } else {
+    progressBar.style.width = "100%";
     showResult();
   }
 }
 
+// Show Result
 function showResult() {
   document.querySelector(".container").innerHTML = `
     <h2> Your Score: ${score}/${questions.length}</h2>
@@ -110,9 +133,9 @@ function showResult() {
   `;
 }
 
-// Save to backend (temporary localStorage)
+//  Save Score
 function saveScore() {
-  const name = document.getElementById("username").value;
+  const name = document.getElementById("username").value || "Anonymous";
   const data = JSON.parse(localStorage.getItem("scores")) || [];
 
   data.push({ name, score });
@@ -121,25 +144,22 @@ function saveScore() {
   showLeaderboard();
 }
 
+//  Leaderboard
 function showLeaderboard() {
   const data = JSON.parse(localStorage.getItem("scores")) || [];
 
-  let html = "<h2>🏆 Leaderboard</h2>";
-
   data.sort((a, b) => b.score - a.score);
 
-  data.forEach((user) => {
-    html += `<p>${user.name}: ${user.score}</p>`;
+  let html = "<h2> Leaderboard</h2>";
+
+  data.forEach((user, index) => {
+    html += `<p>${index + 1}. ${user.name}: ${user.score}</p>`;
   });
+
+  html += `<button onclick="location.reload()">Play Again</button>`;
 
   document.querySelector(".container").innerHTML = html;
 }
 
+//  Start App
 loadQuestion();
-
-
-btn.style.transform = "scale(0.95)";
-setTimeout(() => {
-  btn.style.transform = "scale(1)";
-}, 100);
-

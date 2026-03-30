@@ -127,3 +127,24 @@ body.light .container {
 body.light #answers button {
   color: black;
 }
+
+.progress-container {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  transition: width 0.3s ease;
+}
+
+#progressText {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
