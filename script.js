@@ -166,11 +166,11 @@
 
 
 
-// 📊 Progress elements
+// Progress elements
 const progressBar = document.getElementById("progressBar");
 const progressText = document.getElementById("progressText");
 
-// 🧠 Dynamic Questions (API)
+// Questions from API
 let questions = [];
 
 let currentQuestion = 0;
@@ -178,19 +178,19 @@ let score = 0;
 let timer;
 let timeLeft = 10;
 
-// 🎯 Elements
+// Elements
 const questionEl = document.getElementById("question");
 const answersEl = document.getElementById("answers");
 
-// ⏱️ Timer UI
+// Timer UI
 const timerEl = document.createElement("h3");
 document.querySelector(".container").prepend(timerEl);
 
-// 🔊 Sounds
+// Sounds
 const correctSound = new Audio("correct.mp3");
 const wrongSound = new Audio("wrong.mp3");
 
-// 🌙 Theme toggle
+// Theme toggle
 const toggleBtn = document.createElement("button");
 toggleBtn.innerText = "Toggle Theme";
 document.body.prepend(toggleBtn);
@@ -199,7 +199,7 @@ toggleBtn.onclick = () => {
   document.body.classList.toggle("light");
 };
 
-// 🌐 Fetch Questions from API
+// Fetch questions from API
 async function fetchQuestions() {
   showLoading();
 
@@ -210,7 +210,6 @@ async function fetchQuestions() {
     questions = data.results.map(q => {
       const options = [...q.incorrect_answers];
 
-      // random insert correct answer
       const randomIndex = Math.floor(Math.random() * (options.length + 1));
       options.splice(randomIndex, 0, q.correct_answer);
 
@@ -225,33 +224,32 @@ async function fetchQuestions() {
     score = 0;
 
     loadQuestion();
-
   } catch (error) {
-    questionEl.innerText = "⚠️ Failed to load questions!";
+    questionEl.innerText = "Failed to load questions";
   }
 }
 
-// 🔄 Decode HTML entities
+// Decode HTML entities
 function decodeHTML(html) {
   const txt = document.createElement("textarea");
   txt.innerHTML = html;
   return txt.value;
 }
 
-// ⏳ Loading UI
+// Loading state
 function showLoading() {
   questionEl.innerText = "Loading questions...";
   answersEl.innerHTML = "";
 }
 
-// ⏱️ Timer
+// Timer
 function startTimer() {
   timeLeft = 10;
-  timerEl.innerText = `⏱️ Time: ${timeLeft}s`;
+  timerEl.innerText = `Time: ${timeLeft}s`;
 
   timer = setInterval(() => {
     timeLeft--;
-    timerEl.innerText = `⏱️ Time: ${timeLeft}s`;
+    timerEl.innerText = `Time: ${timeLeft}s`;
 
     if (timeLeft === 0) {
       clearInterval(timer);
@@ -260,14 +258,14 @@ function startTimer() {
   }, 1000);
 }
 
-// 🧠 Load Question
+// Load question
 function loadQuestion() {
   clearInterval(timer);
   startTimer();
 
   const q = questions[currentQuestion];
 
-  // 📊 Progress
+  // Progress update
   const progressPercent = (currentQuestion / questions.length) * 100;
   progressBar.style.width = progressPercent + "%";
   progressText.innerText = `Question ${currentQuestion + 1} / ${questions.length}`;
@@ -282,9 +280,11 @@ function loadQuestion() {
     btn.onclick = () => {
       clearInterval(timer);
 
-      // animation
+      // Click animation
       btn.style.transform = "scale(0.95)";
-      setTimeout(() => btn.style.transform = "scale(1)", 100);
+      setTimeout(() => {
+        btn.style.transform = "scale(1)";
+      }, 100);
 
       if (index === q.answer) {
         btn.style.background = "green";
@@ -295,7 +295,7 @@ function loadQuestion() {
         wrongSound.play();
       }
 
-      // highlight correct
+      // Highlight correct answer
       document.querySelectorAll("#answers button")[q.answer].style.background = "green";
 
       setTimeout(nextQuestion, 1000);
@@ -305,7 +305,7 @@ function loadQuestion() {
   });
 }
 
-// ➡️ Next
+// Next question
 function nextQuestion() {
   currentQuestion++;
 
@@ -317,13 +317,13 @@ function nextQuestion() {
   }
 }
 
-// 🏁 Result
+// Show result
 function showResult() {
   document.querySelector(".container").innerHTML = `
-    <h2>🏆 Your Score: ${score}/${questions.length}</h2>
+    <h2>Your Score: ${score}/${questions.length}</h2>
     <button onclick="location.reload()">Play Again</button>
   `;
 }
 
-// 🚀 Start App
+// Start app
 fetchQuestions();
