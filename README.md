@@ -37,6 +37,14 @@ It fetches real-time questions from an API and provides an interactive quiz expe
 6. Final score is displayed at the end
 
 ---
+## Future Improvements
+
+- Category and difficulty selection
+- 50-50 lifeline
+- Backend leaderboard (Node.js + MongoDB)
+- User authentication
+- Quiz analytics dashboard
+
 
 ## Author
 
