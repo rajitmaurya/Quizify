@@ -47,12 +47,12 @@ skipBtn.onclick = () => {
 const correctSound = new Audio("correct.mp3");
 const wrongSound = new Audio("wrong.mp3");
 
-// Fetch questions from API
+// Fetch questions from API (Tech category)
 async function fetchQuestions() {
   showLoading();
 
   try {
-    const res = await fetch("https://opentdb.com/api.php?amount=5&type=multiple");
+    const res = await fetch("https://opentdb.com/api.php?amount=5&category=18&type=multiple");
     const data = await res.json();
 
     questions = data.results.map(q => {
@@ -77,7 +77,23 @@ async function fetchQuestions() {
 
     loadQuestion();
   } catch (error) {
-    questionEl.innerText = "Failed to load questions";
+    // Fallback questions
+    questions = [
+      {
+        question: "What is JavaScript?",
+        options: ["Programming Language", "Markup Language", "Database"],
+        answer: 0
+      },
+      {
+        question: "Which company developed JavaScript?",
+        options: ["Google", "Netscape", "Microsoft"],
+        answer: 1
+      }
+    ];
+
+    currentQuestion = 0;
+    score = 0;
+    loadQuestion();
   }
 }
 
@@ -132,7 +148,7 @@ function loadQuestion() {
     btn.onclick = () => {
       clearInterval(timer);
 
-      // animation
+      // Animation
       btn.style.transform = "scale(0.95)";
       setTimeout(() => {
         btn.style.transform = "scale(1)";
@@ -147,7 +163,7 @@ function loadQuestion() {
         wrongSound.play();
       }
 
-      // highlight correct
+      // Highlight correct
       document.querySelectorAll("#answers button")[q.answer].style.background = "green";
 
       setTimeout(nextQuestion, 1000);
@@ -177,5 +193,5 @@ function showResult() {
   `;
 }
 
-// Start
+// Start app
 fetchQuestions();
