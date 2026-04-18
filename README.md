@@ -5,7 +5,7 @@ It fetches real-time questions from an API and provides an interactive quiz expe
 
 ---
 
-##
+## features
 
 - Dynamic quiz questions from Open Trivia API
 - Timer for each question
