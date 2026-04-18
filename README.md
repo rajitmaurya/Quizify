@@ -47,4 +47,4 @@ It fetches real-time questions from an API and provides an interactive quiz expe
 
 
 ## Author
-Rajit Maurya - full stack dev
+Rajit Maurya - full stack developer
