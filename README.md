@@ -5,7 +5,7 @@ It fetches real-time questions from an API and provides an interactive quiz expe
 
 ---
 
-## Features
+## features
 
 - Dynamic quiz questions from Open Trivia API
 - Timer for each question
@@ -47,4 +47,4 @@ It fetches real-time questions from an API and provides an interactive quiz expe
 
 
 ## Author
-Rajit Maurya - full stack dev
+Rajit Maurya - full stack developer
