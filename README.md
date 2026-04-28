@@ -26,6 +26,12 @@ It fetches real-time questions from an API and provides an interactive quiz expe
 
 ---
 
+## Tech Stack
+
+- HTML
+- CSS (Glassmorphism + Animations)
+- JavaScript (Vanilla JS)
+- Open Trivia DB API
 
 ---
 
