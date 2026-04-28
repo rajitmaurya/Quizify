@@ -4,6 +4,14 @@ Quizify is a modern quiz application built using HTML, CSS, and JavaScript.
 It fetches real-time questions from an API and provides an interactive quiz experience with timer, progress tracking, and lifelines.
 
 ---
+## How It Works
+
+1. Questions are fetched from the Open Trivia API
+2. Each question has multiple options
+3. User selects an answer within the time limit
+4. Score updates based on correct answers
+5. Progress bar tracks quiz completion
+6. Final score is displayed at the end
 
 ## Features
 
