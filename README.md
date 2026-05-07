@@ -1,4 +1,4 @@
-# Quizify test
+# Quizify test your limit 
 
 Quizify is a modern quiz application built using HTML, CSS, and JavaScript.  
 It fetches real-time questions from an API and provides an interactive quiz experience with timer, progress tracking, and lifelines.
