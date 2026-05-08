@@ -13,7 +13,7 @@ It fetches real-time questions from an API and provides an interactive quiz expe
 5. Progress bar tracks quiz completion
 6. Final score is displayed at the end
 
-## Features
+## 
 
 - Dynamic quiz questions from Open Trivia API
 - Timer for each question
